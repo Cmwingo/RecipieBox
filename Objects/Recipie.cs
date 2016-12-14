@@ -8,11 +8,13 @@ namespace RecipieBox
   {
     private int _id;
     private string _name;
+    private int _rating;
 
-    public Recipie(string Name, int Id = 0)
+    public Recipie(string Name, int Rating = 0, int Id = 0)
     {
       _id = Id;
       _name = Name;
+      _rating = Rating;
     }
 
     public override bool Equals(System.Object otherRecipie)
@@ -25,6 +27,7 @@ namespace RecipieBox
           Recipie newRecipie = (Recipie) otherRecipie;
           bool idEquality = this.GetId() == newRecipie.GetId();
           bool nameEquality = this.GetName() == newRecipie.GetName();
+          bool ratingEquality = this.GetRating() == newRecipie.GetRating();
           return (idEquality && nameEquality);
         }
     }
@@ -41,6 +44,10 @@ namespace RecipieBox
     {
       _name = newName;
     }
+    public int GetRating()
+    {
+      return _rating;
+    }
 
     public static List<Recipie> GetAll()
     {
@@ -56,7 +63,8 @@ namespace RecipieBox
       {
         int recipieId = rdr.GetInt32(0);
         string recipieName = rdr.GetString(1);
-        Recipie newRecipie = new Recipie(recipieName, recipieId);
+        int rating = rdr.GetInt32(2);
+        Recipie newRecipie = new Recipie(recipieName, rating, recipieId);
         AllRecipies.Add(newRecipie);
       }
       if (rdr != null)
@@ -70,16 +78,21 @@ namespace RecipieBox
       return AllRecipies;
     }
 
-    public void Update(string newName)
+    public void Update(string newName, int newRating)
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("UPDATE recipies SET name = @NewName OUTPUT INSERTED.name where id = @RecipieId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE recipies SET name = @NewName, rating = @NewRating OUTPUT INSERTED.name, INSERTED.rating WHERE id = @RecipieId;", conn);
 
       SqlParameter descParam = new SqlParameter();
       descParam.ParameterName = "@NewName";
       descParam.Value = newName;
+
+      SqlParameter ratingParam = new SqlParameter();
+      ratingParam.ParameterName = "@NewRating";
+      ratingParam.Value = newRating;
+
 
 
       SqlParameter idParam = new SqlParameter();
@@ -87,6 +100,7 @@ namespace RecipieBox
       idParam.Value = this._id;
 
       cmd.Parameters.Add(descParam);
+      cmd.Parameters.Add(ratingParam);
       cmd.Parameters.Add(idParam);
 
       SqlDataReader rdr = cmd.ExecuteReader();
@@ -94,6 +108,7 @@ namespace RecipieBox
       while (rdr.Read())
       {
         this._name = rdr.GetString(0);
+        this._rating = rdr.GetInt32(1);
       }
 
       if (rdr != null)
@@ -111,14 +126,18 @@ namespace RecipieBox
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO recipies (name) OUTPUT INSERTED.id VALUES (@RecipieName);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO recipies (name, rating) OUTPUT INSERTED.id VALUES (@RecipieName, @RecipieRating);", conn);
 
       SqlParameter nameParam = new SqlParameter();
       nameParam.ParameterName = "@RecipieName";
       nameParam.Value = this.GetName();
 
+      SqlParameter ratingParam = new SqlParameter();
+      ratingParam.ParameterName = "@RecipieRating";
+      ratingParam.Value = this.GetRating();
 
       cmd.Parameters.Add(nameParam);
+      cmd.Parameters.Add(ratingParam);
 
       SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -159,13 +178,15 @@ namespace RecipieBox
 
       int foundRecipieId = 0;
       string foundRecipieName = null;
+      int foundRecipieRating = 0;
 
       while(rdr.Read())
       {
         foundRecipieId = rdr.GetInt32(0);
         foundRecipieName = rdr.GetString(1);
+        foundRecipieRating = rdr.GetInt32(2);
       }
-      Recipie foundRecipie = new Recipie(foundRecipieName, foundRecipieId);
+      Recipie foundRecipie = new Recipie(foundRecipieName, foundRecipieRating, foundRecipieId);
 
       if (rdr != null)
       {

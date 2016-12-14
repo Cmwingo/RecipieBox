@@ -75,7 +75,7 @@ namespace RecipieBox
       Patch["recipies/update/{id}"] = parameters =>
       {
         Recipie foundRecipie = Recipie.Find(parameters.id);
-        foundRecipie.Update(Request.Form["new-description"]);
+        foundRecipie.Update(Request.Form["new-description"], Request.Form["new-rating"]);
         return View["success.cshtml"];
       };
       Get["tags/update/{id}"] = parameters =>

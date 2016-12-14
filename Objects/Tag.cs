@@ -241,7 +241,8 @@ namespace RecipieBox
       {
         int thisRecipieId = rdr.GetInt32(0);
         string recipieDescription = rdr.GetString(1);
-        Recipie foundRecipie = new Recipie(recipieDescription, thisRecipieId);
+        int recipieRating = rdr.GetInt32(2);
+        Recipie foundRecipie = new Recipie(recipieDescription, recipieRating, thisRecipieId);
         recipies.Add(foundRecipie);
       }
       if (rdr!=null)

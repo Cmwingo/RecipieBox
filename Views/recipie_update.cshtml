@@ -7,5 +7,6 @@
 <form action="/recipies/update/@Model.GetId()" method="post">
   <input name='_method' type='hidden' value='PATCH'>
   <input type="text" name="new-description" placeholder="Enter new Name:" required>
+  <input type="text" name="new-rating" placeholder="Enter new Rating:" required>
   <button type="submit" name="button">Submit</button>
 </form>

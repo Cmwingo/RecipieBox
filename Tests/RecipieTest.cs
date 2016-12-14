@@ -147,11 +147,11 @@ namespace RecipieBox
     [Fact]
     public void Test_Update_UpdatesInDb()
     {
-      Recipie testRecipie = new Recipie("Name");
+      Recipie testRecipie = new Recipie("Name", 0);
       testRecipie.Save();
-      testRecipie.Update("Other name");
+      testRecipie.Update("Other name", 0);
 
-      Recipie newRecipie = new Recipie("Other name", testRecipie.GetId());
+      Recipie newRecipie = new Recipie("Other name", 0, testRecipie.GetId());
 
       Assert.Equal(testRecipie, newRecipie);
     }
