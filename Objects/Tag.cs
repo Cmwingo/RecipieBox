@@ -236,39 +236,17 @@ namespace RecipieBox
 
       SqlDataReader rdr = cmd.ExecuteReader();
 
-      List<int> recipieIds = new List<int> {};
+      List<Recipie> recipies = new List<Recipie> {};
       while(rdr.Read())
       {
-        int recipieId = rdr.GetInt32(0);
-        recipieIds.Add(recipieId);
+        int thisRecipieId = rdr.GetInt32(0);
+        string recipieDescription = rdr.GetString(1);
+        Recipie foundRecipie = new Recipie(recipieDescription, thisRecipieId);
+        recipies.Add(foundRecipie);
       }
       if (rdr!=null)
       {
         rdr.Close();
-      }
-
-      List<Recipie> recipies = new List<Recipie> {};
-      foreach (int recipieId in recipieIds)
-      {
-        SqlCommand recipieQuery = new SqlCommand("SELECT * FROM recipies WHERE id = @RecipieId;", conn);
-
-        SqlParameter recipieIdParameter = new SqlParameter();
-        recipieIdParameter.ParameterName = "@RecipieId";
-        recipieIdParameter.Value = recipieId;
-        recipieQuery.Parameters.Add(recipieIdParameter);
-
-        SqlDataReader queryReader = recipieQuery.ExecuteReader();
-        while(queryReader.Read())
-        {
-          int thisRecipieId = queryReader.GetInt32(0);
-          string recipieDescription = queryReader.GetString(1);
-          Recipie foundRecipie = new Recipie(recipieDescription, thisRecipieId);
-          recipies.Add(foundRecipie);
-        }
-        if(queryReader!=null)
-        {
-          queryReader.Close();
-        }
       }
       if(conn!=null)
       {

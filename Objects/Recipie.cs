@@ -228,7 +228,7 @@ namespace RecipieBox
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT tag_id FROM recipies_tags WHERE recipie_id = @RecipieId;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT tags.* FROM recipies JOIN recipies_tags ON (recipies.id = recipies_tags.recipie_id) JOIN tags ON (recipies_tags.tag_id = tags.id) WHERE recipie_id = @RecipieId;", conn);
 
       SqlParameter recipieIdParameter = new SqlParameter();
       recipieIdParameter.ParameterName = "@RecipieId";
@@ -237,41 +237,18 @@ namespace RecipieBox
 
       SqlDataReader rdr = cmd.ExecuteReader();
 
-      List<int> tagIds = new List<int> {};
+      List<Tag> tags = new List<Tag> {};
 
       while (rdr.Read())
       {
-        int tagId = rdr.GetInt32(0);
-        tagIds.Add(tagId);
+        int thisTagId = rdr.GetInt32(0);
+        string tagName = rdr.GetString(1);
+        Tag foundTag = new Tag(tagName, thisTagId);
+        tags.Add(foundTag);
       }
       if (rdr != null)
       {
         rdr.Close();
-      }
-
-      List<Tag> tags = new List<Tag> {};
-
-      foreach (int tagId in tagIds)
-      {
-        SqlCommand tagQuery = new SqlCommand("SELECT * FROM tags WHERE id = @TagId;", conn);
-
-        SqlParameter tagIdParameter = new SqlParameter();
-        tagIdParameter.ParameterName = "@TagId";
-        tagIdParameter.Value = tagId;
-        tagQuery.Parameters.Add(tagIdParameter);
-
-        SqlDataReader queryReader = tagQuery.ExecuteReader();
-        while (queryReader.Read())
-        {
-          int thisTagId = queryReader.GetInt32(0);
-          string tagName = queryReader.GetString(1);
-          Tag foundTag = new Tag(tagName, thisTagId);
-          tags.Add(foundTag);
-        }
-        if (queryReader != null)
-        {
-          queryReader.Close();
-        }
       }
       if (conn != null)
       {
