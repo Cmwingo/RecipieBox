@@ -1,0 +1,13 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+
+<h1>Recipie Box</h1>
+<h2>Add new tag</h2>
+<hr />
+<form action="/tags/new" method="post">
+  <label for="tag-name">Tag name:</label>
+  <input id="tag-name" name="tag-name" type="text">
+  <button type="submit">Add</button>
+</form>
+<h4><a href="/">Return home</a></h4>

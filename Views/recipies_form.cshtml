@@ -1,0 +1,12 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+
+<h1>Add a new recipie</h1>
+<form action="/recipies/new" method="post">
+  <label for="recipie-description">Recipie description:</label>
+  <input id="recipie-description" name="recipie-description" type="text">
+  <button type="submit">Add new recipie</button>
+</form>
+<p><a href="/">Back home</a></p>
+<p><a href="/recipies">View all recipies</a></p>

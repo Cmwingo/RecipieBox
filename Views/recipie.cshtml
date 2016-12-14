@@ -1,0 +1,36 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+
+<h1>Recipie Box</h1>
+<h2>Recipie: @Model["recipie"].GetName()</h2>
+<hr />
+@if (@Model["recipieTags"].Count != 0)
+{
+  <h4>This recipie has these tags:</h4>
+  <ul>
+    @foreach (var tag in @Model["recipieTags"])
+    {
+      <li><a href="/tags/@tag.GetId()">@tag.GetName()</a></li>
+    }
+  </ul>
+}
+<h4>Add a tag to this recipie:</h4>
+<form action='/recipie/add_tag' method='post'>
+  <input id='recipie-id' name='recipie-id' type='hidden' value='@Model["recipie"].GetId()'>
+  <label for='tag-id'>Select a tag</label>
+  <select id='tag-id' name='tag-id' type='text'>
+    @foreach (var tag in @Model["allTags"])
+    {
+      <option value='@tag.GetId()'>@tag.GetName()</option>
+    }
+  </select>
+  <button type='submit'>Add</button>
+  <h4><a href="/recipies/update/@Model["recipie"].GetId()">Update this recipie</a></h4>
+
+  </form>
+  <form action="/recipie/delete/@Model["recipie"].GetId()" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">Delete</button>
+  </form>
+<p><a href="/">Return to Main Page</a></p>
