@@ -114,7 +114,7 @@ namespace RecipieBox
         return View["success.cshtml"];
       };
 
-      Delete["recipies/delete/{id}"] = parameters =>
+      Delete["recipie/delete/{id}"] = parameters =>
       {
         Recipie foundRecipie = Recipie.Find(parameters.id);
         foundRecipie.Delete();

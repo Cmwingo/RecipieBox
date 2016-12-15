@@ -1,11 +1,14 @@
-@{
-  Layout="Shared/_Layout.cshtml";
-}
+<head>
+  <link rel="stylesheet" href="../../Content/css/bootstrap.css" type="text/css">
+  <link rel="stylesheet" href="../../Content/css/styles.css" type="text/css">
+</head>
 
-<h3>@Model.GetName()</h3>
+<div class="container">
+  <h3>@Model.GetName()</h3>
 
-<form action="/tags/update/@Model.GetId()" method="post">
-  <input name='_method' type='hidden' value='PATCH'>
-  <input type="text" name="new-description" placeholder="Enter new Name:" required>
-  <button type="submit" name="button">Submit</button>
-</form>
+  <form action="/tags/update/@Model.GetId()" method="post">
+    <input name='_method' type='hidden' value='PATCH'>
+    <input type="text" name="new-description" placeholder="Enter new Name:" required>
+    <button type="submit" name="button">Submit</button>
+  </form>
+</div>
