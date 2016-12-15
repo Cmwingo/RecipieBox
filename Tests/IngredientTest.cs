@@ -85,9 +85,9 @@ namespace RecipieBox
     {
       Ingredient testIngredient = new Ingredient("Name", 0, 0);
       testIngredient.Save();
-      testIngredient.Update("Other name", 0);
+      testIngredient.Update("Other name", 0, "oz");
 
-      Ingredient newIngredient = new Ingredient("Other name", 0, 0, testIngredient.GetId());
+      Ingredient newIngredient = new Ingredient("Other name", 0, 0, "oz", testIngredient.GetId());
 
       Assert.Equal(testIngredient, newIngredient);
     }

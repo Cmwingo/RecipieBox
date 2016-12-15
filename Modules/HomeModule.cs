@@ -154,7 +154,7 @@ namespace RecipieBox
       Patch["ingredients/update/{id}"] = parameters =>
       {
         Ingredient foundIngredient = Ingredient.Find(parameters.id);
-        foundIngredient.Update(Request.Form["new-description"], Request.Form["new-quantity"]);
+        foundIngredient.Update(Request.Form["new-description"], Request.Form["new-quantity"], Request.Form["new-unit"]);
         return View["success.cshtml"];
       };
 

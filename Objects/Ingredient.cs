@@ -10,12 +10,14 @@ namespace RecipieBox
     private string _name;
     private int _quantity;
     private int _recipieId;
+    private string _unit;
 
-    public Ingredient(string Name, int RecipieId, int Quantity = 0, int Id = 0)
+    public Ingredient(string Name, int RecipieId, int Quantity = 0, string Unit = " ", int Id = 0)
     {
       _id = Id;
       _name = Name;
       _quantity = Quantity;
+      _unit = Unit;
       _recipieId = RecipieId;
     }
 
@@ -64,6 +66,15 @@ namespace RecipieBox
     {
       _recipieId = newRecipieId;
     }
+    public string GetUnit()
+    {
+      return _unit;
+    }
+    public void SetUnit(string newUnit)
+    {
+      _unit = newUnit;
+    }
+
 
     public static List<Ingredient> GetAll()
     {
@@ -81,7 +92,8 @@ namespace RecipieBox
         string ingredientName = rdr.GetString(1);
         int quantity = rdr.GetInt32(2);
         int recipieId = rdr.GetInt32(3);
-        Ingredient newIngredient = new Ingredient(ingredientName, recipieId, quantity,  ingredientId);
+        string unit = rdr.GetString(4);
+        Ingredient newIngredient = new Ingredient(ingredientName, recipieId, quantity, unit, ingredientId);
         AllIngredients.Add(newIngredient);
       }
       if (rdr != null)
@@ -95,12 +107,12 @@ namespace RecipieBox
       return AllIngredients;
     }
 
-    public void Update(string newName, int newQuantity)
+    public void Update(string newName, int newQuantity, string newUnit)
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("UPDATE ingredients SET name = @NewName, quantity = @NewQuantity OUTPUT INSERTED.name, INSERTED.quantity WHERE id = @IngredientId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE ingredients SET name = @NewName, quantity = @NewQuantity, unit = @NewUnit OUTPUT INSERTED.name, INSERTED.quantity, INSERTED.unit WHERE id = @IngredientId;", conn);
 
       SqlParameter descParam = new SqlParameter();
       descParam.ParameterName = "@NewName";
@@ -110,7 +122,9 @@ namespace RecipieBox
       quantityParam.ParameterName = "@NewQuantity";
       quantityParam.Value = newQuantity;
 
-
+      SqlParameter unitParam = new SqlParameter();
+      unitParam.ParameterName = "@NewUnit";
+      unitParam.Value = newUnit;
 
       SqlParameter idParam = new SqlParameter();
       idParam.ParameterName = "@IngredientId";
@@ -118,6 +132,7 @@ namespace RecipieBox
 
       cmd.Parameters.Add(descParam);
       cmd.Parameters.Add(quantityParam);
+      cmd.Parameters.Add(unitParam);
       cmd.Parameters.Add(idParam);
 
       SqlDataReader rdr = cmd.ExecuteReader();
@@ -126,6 +141,7 @@ namespace RecipieBox
       {
         this._name = rdr.GetString(0);
         this._quantity = rdr.GetInt32(1);
+        this._unit = rdr.GetString(2);
       }
 
       if (rdr != null)
@@ -143,7 +159,7 @@ namespace RecipieBox
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO ingredients (name, recipie_id, quantity) OUTPUT INSERTED.id VALUES (@IngredientName, @IngredientRecipieId, @IngredientQuantity);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO ingredients (name, recipie_id, quantity, unit) OUTPUT INSERTED.id VALUES (@IngredientName, @IngredientRecipieId, @IngredientQuantity, @IngredientUnit);", conn);
 
       SqlParameter nameParam = new SqlParameter();
       nameParam.ParameterName = "@IngredientName";
@@ -157,11 +173,14 @@ namespace RecipieBox
       recipieIdParam.ParameterName = "@IngredientRecipieId";
       recipieIdParam.Value = this.GetRecipieId();
 
+      SqlParameter unitParam = new SqlParameter();
+      unitParam.ParameterName = "@IngredientUnit";
+      unitParam.Value = this.GetUnit();
 
       cmd.Parameters.Add(nameParam);
       cmd.Parameters.Add(quantityParam);
       cmd.Parameters.Add(recipieIdParam);
-
+      cmd.Parameters.Add(unitParam);
 
       SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -204,6 +223,7 @@ namespace RecipieBox
       string foundIngredientName = null;
       int foundIngredientQuantity = 0;
       int foundIngredientRecipieId = 0;
+      string foundIngredientUnit = null;
 
       while(rdr.Read())
       {
@@ -211,8 +231,9 @@ namespace RecipieBox
         foundIngredientName = rdr.GetString(1);
         foundIngredientQuantity = rdr.GetInt32(2);
         foundIngredientRecipieId = rdr.GetInt32(3);
+        foundIngredientUnit = rdr.GetString(4);
       }
-      Ingredient foundIngredient = new Ingredient(foundIngredientName, foundIngredientRecipieId, foundIngredientQuantity, foundIngredientId);
+      Ingredient foundIngredient = new Ingredient(foundIngredientName, foundIngredientRecipieId, foundIngredientQuantity, foundIngredientUnit, foundIngredientId);
 
       if (rdr != null)
       {

@@ -300,7 +300,8 @@ namespace RecipieBox
         string ingredientName = rdr.GetString(1);
         int ingredientQuantity = rdr.GetInt32(2);
         int ingredientRecipieId = rdr.GetInt32(3);
-        Ingredient foundIngredient = new Ingredient(ingredientName, ingredientRecipieId, ingredientQuantity, thisIngredientId);
+        string ingredientUnit = rdr.GetString(4);
+        Ingredient foundIngredient = new Ingredient(ingredientName, ingredientRecipieId, ingredientQuantity, ingredientUnit, thisIngredientId);
         ingredients.Add(foundIngredient);
       }
       if (rdr != null)

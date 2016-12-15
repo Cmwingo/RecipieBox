@@ -11,6 +11,7 @@
     <input name='recipie-id' type='hidden' value='@Model.GetId()'>
     <input type="text" name="new-description" placeholder="Enter new Name:" required>
     <input type="text" name="new-quantity" placeholder="Enter new Quantity:" required>
+    <input type="text" name="new-unit" placeholder="Enter new Unit:" required>
     <button type="submit" name="button">Submit</button>
   </form>
   <form action="/ingredients/delete/@Model.GetId()" method="post">
