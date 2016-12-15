@@ -31,11 +31,7 @@
   @foreach (var instruction in @Model["recipieInstructions"])
   {
     <li>
-      <a class="leftmargin" href="/instructions/update/@instruction.GetId()">@instruction.GetName()</a> ||
-      <form action="/instructions/delete/@instruction.GetId()" method="post">
-        <input type="hidden" name="_method" value="DELETE">
-        <button class="leftmargin btn-sm btn-danger" type="submit">Delete</button>
-      </form>
+      <a class="leftmargin" href="/instructions/update/@instruction.GetId()">@instruction.GetName()</a>
     </li>
   }
   </ol>

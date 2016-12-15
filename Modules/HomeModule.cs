@@ -158,6 +158,19 @@ namespace RecipieBox
         return View["success.cshtml"];
       };
 
+      Get["instructions/update/{id}"] = parameters =>
+      {
+        Instruction foundInstruction = Instruction.Find(parameters.id);
+        return View["instruction_update.cshtml", foundInstruction];
+      };
+
+      Patch["instructions/update/{id}"] = parameters =>
+      {
+        Instruction foundInstruction = Instruction.Find(parameters.id);
+        foundInstruction.Update(Request.Form["new-description"], Request.Form["new-step-number"]);
+        return View["success.cshtml"];
+      };
+
       Delete["ingredients/delete/{id}"] = parameters =>
       {
         Ingredient foundIngredient = Ingredient.Find(parameters.id);
