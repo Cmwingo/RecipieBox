@@ -1,20 +1,31 @@
-
 .centered {
   text-align: center;
-};
-
-body {
-  background-color: green;
-};
-
-.container h5 {
-  color: gold;
-};
-
-.leftmargin {
-  margin-left: 15px;
-};
+}
 
 li {
   padding-top: 10px;
-};
+  font-size: 200%;
+}
+
+body {
+  background-image: url("../img/recipie-box.jpg");
+  background-size: cover;
+  color: #5e3821;
+  text-shadow: 1px 1px black;
+}
+
+a {
+  color: #21255e;
+}
+.container h5 {
+  color: gold;
+}
+
+.leftmargin {
+  margin-left: 15px;
+}
+
+.jumbotron {
+  background-color: #a08828;
+  font-family: fantasy;
+}
