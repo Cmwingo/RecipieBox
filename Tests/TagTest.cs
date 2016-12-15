@@ -80,11 +80,6 @@ namespace RecipieBox
       Assert.Equal(testTag, foundTag);
     }
 
-    public void Dispose()
-    {
-      Recipie.DeleteAll();
-      Tag.DeleteAll();
-    }
     [Fact]
     public void Test_Delete_DeletesTagFromDatabase()
     {
@@ -169,6 +164,13 @@ namespace RecipieBox
 
       //Assert
       Assert.Equal(testRecipieTags, resultRecipieTags);
+    }
+
+    public void Dispose()
+    {
+      Recipie.DeleteAll();
+      Tag.DeleteAll();
+      Ingredient.DeleteAll();
     }
   }
 }

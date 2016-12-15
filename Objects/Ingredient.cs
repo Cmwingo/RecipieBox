@@ -9,12 +9,14 @@ namespace RecipieBox
     private int _id;
     private string _name;
     private int _quantity;
+    private int _recipieId;
 
-    public Ingredient(string Name, int Quantity = 0, int Id = 0)
+    public Ingredient(string Name, int RecipieId, int Quantity = 0, int Id = 0)
     {
       _id = Id;
       _name = Name;
       _quantity = Quantity;
+      _recipieId = RecipieId;
     }
 
     public override bool Equals(System.Object otherIngredient)
@@ -28,7 +30,9 @@ namespace RecipieBox
           bool idEquality = this.GetId() == newIngredient.GetId();
           bool nameEquality = this.GetName() == newIngredient.GetName();
           bool quantityEquality = this.GetQuantity() == newIngredient.GetQuantity();
-          return (idEquality && nameEquality);
+          bool recipieIdEquality = this.GetRecipieId() == newIngredient.GetRecipieId();
+
+          return (idEquality && nameEquality && quantityEquality && recipieIdEquality);
         }
     }
 
@@ -52,6 +56,14 @@ namespace RecipieBox
     {
       _quantity = newQuantity;
     }
+    public int GetRecipieId()
+    {
+      return _recipieId;
+    }
+    public void SetRecipieId(int newRecipieId)
+    {
+      _recipieId = newRecipieId;
+    }
 
     public static List<Ingredient> GetAll()
     {
@@ -68,7 +80,8 @@ namespace RecipieBox
         int ingredientId = rdr.GetInt32(0);
         string ingredientName = rdr.GetString(1);
         int quantity = rdr.GetInt32(2);
-        Ingredient newIngredient = new Ingredient(ingredientName, quantity, ingredientId);
+        int recipieId = rdr.GetInt32(3);
+        Ingredient newIngredient = new Ingredient(ingredientName, recipieId, quantity,  ingredientId);
         AllIngredients.Add(newIngredient);
       }
       if (rdr != null)
@@ -130,7 +143,7 @@ namespace RecipieBox
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO ingredients (name, quantity) OUTPUT INSERTED.id VALUES (@IngredientName, @IngredientQuantity);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO ingredients (name, recipie_id, quantity) OUTPUT INSERTED.id VALUES (@IngredientName, @IngredientRecipieId, @IngredientQuantity);", conn);
 
       SqlParameter nameParam = new SqlParameter();
       nameParam.ParameterName = "@IngredientName";
@@ -140,8 +153,15 @@ namespace RecipieBox
       quantityParam.ParameterName = "@IngredientQuantity";
       quantityParam.Value = this.GetQuantity();
 
+      SqlParameter recipieIdParam = new SqlParameter();
+      recipieIdParam.ParameterName = "@IngredientRecipieId";
+      recipieIdParam.Value = this.GetRecipieId();
+
+
       cmd.Parameters.Add(nameParam);
       cmd.Parameters.Add(quantityParam);
+      cmd.Parameters.Add(recipieIdParam);
+
 
       SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -183,14 +203,16 @@ namespace RecipieBox
       int foundIngredientId = 0;
       string foundIngredientName = null;
       int foundIngredientQuantity = 0;
+      int foundIngredientRecipieId = 0;
 
       while(rdr.Read())
       {
         foundIngredientId = rdr.GetInt32(0);
         foundIngredientName = rdr.GetString(1);
         foundIngredientQuantity = rdr.GetInt32(2);
+        foundIngredientRecipieId = rdr.GetInt32(3);
       }
-      Ingredient foundIngredient = new Ingredient(foundIngredientName, foundIngredientQuantity, foundIngredientId);
+      Ingredient foundIngredient = new Ingredient(foundIngredientName, foundIngredientRecipieId, foundIngredientQuantity, foundIngredientId);
 
       if (rdr != null)
       {

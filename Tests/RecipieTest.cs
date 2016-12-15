@@ -122,6 +122,27 @@ namespace RecipieBox
     }
 
     [Fact]
+    public void Test_GetIngredients_ReturnsAllRecipieIngredients()
+    {
+      //Arrange
+      Recipie testRecipie = new Recipie("Pizza");
+      testRecipie.Save();
+
+      Ingredient testIngredient1 = new Ingredient("Cheese", testRecipie.GetId());
+      testIngredient1.Save();
+
+      Ingredient testIngredient2 = new Ingredient("Tomato", testRecipie.GetId());
+      testIngredient2.Save();
+
+      //Act
+      List<Ingredient> result = testRecipie.GetIngredients();
+      List<Ingredient> testList = new List<Ingredient> {testIngredient1, testIngredient2};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
+    [Fact]
     public void Test_Delete_DeletesRecipieAssociationsFromDatabase()
     {
       //Arrange
@@ -159,6 +180,7 @@ namespace RecipieBox
     public void Dispose()
     {
       Recipie.DeleteAll();
+      Ingredient.DeleteAll();
       Tag.DeleteAll();
     }
   }

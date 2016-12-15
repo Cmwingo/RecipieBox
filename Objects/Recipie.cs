@@ -28,7 +28,7 @@ namespace RecipieBox
           bool idEquality = this.GetId() == newRecipie.GetId();
           bool nameEquality = this.GetName() == newRecipie.GetName();
           bool ratingEquality = this.GetRating() == newRecipie.GetRating();
-          return (idEquality && nameEquality);
+          return (idEquality && nameEquality && ratingEquality);
         }
     }
 
@@ -276,6 +276,62 @@ namespace RecipieBox
         conn.Close();
       }
       return tags;
+    }
+
+    public void AddIngredient(Ingredient newIngredient)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO ingredients (recipie_id) VALUES (@RecipieId);", conn);
+
+      SqlParameter recipieIdParameter = new SqlParameter();
+      recipieIdParameter.ParameterName = "@RecipieId";
+      recipieIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(recipieIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public List<Ingredient> GetIngredients()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM ingredients WHERE recipie_id = @RecipieId;", conn);
+
+      SqlParameter recipieIdParameter = new SqlParameter();
+      recipieIdParameter.ParameterName = "@RecipieId";
+      recipieIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(recipieIdParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<Ingredient> ingredients = new List<Ingredient> {};
+
+      while (rdr.Read())
+      {
+        int thisIngredientId = rdr.GetInt32(0);
+        string ingredientName = rdr.GetString(1);
+        int ingredientQuantity = rdr.GetInt32(2);
+        int ingredientRecipieId = rdr.GetInt32(3);
+        Ingredient foundIngredient = new Ingredient(ingredientName, ingredientRecipieId, ingredientQuantity, thisIngredientId);
+        ingredients.Add(foundIngredient);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return ingredients;
     }
   }
 }

@@ -27,8 +27,8 @@ namespace RecipieBox
     public void Test_EqualOverrideTrueForSameName()
     {
       //Arrange, Act
-      Ingredient firstIngredient = new Ingredient("Name");
-      Ingredient secondIngredient = new Ingredient("Name");
+      Ingredient firstIngredient = new Ingredient("Cheese", 0, 0);
+      Ingredient secondIngredient = new Ingredient("Cheese", 0, 0);
 
       //Assert
       Assert.Equal(firstIngredient, secondIngredient);
@@ -38,7 +38,7 @@ namespace RecipieBox
     public void Test_Save()
     {
       //Arrange
-      Ingredient testIngredient = new Ingredient("Name");
+      Ingredient testIngredient = new Ingredient("Cheese", 0, 0);
       testIngredient.Save();
 
       //Act
@@ -53,7 +53,7 @@ namespace RecipieBox
     public void Test_SaveAssignsIdToObject()
     {
       //Arrange
-      Ingredient testIngredient = new Ingredient("Name");
+      Ingredient testIngredient = new Ingredient("Cheese", 0, 0);
       testIngredient.Save();
 
       //Act
@@ -70,7 +70,7 @@ namespace RecipieBox
     public void Test_FindFindsIngredientInDatabase()
     {
       //Arrange
-      Ingredient testIngredient = new Ingredient("Name");
+      Ingredient testIngredient = new Ingredient("Name", 0, 0);
       testIngredient.Save();
 
       //Act
@@ -83,11 +83,11 @@ namespace RecipieBox
     [Fact]
     public void Test_Update_UpdatesInDb()
     {
-      Ingredient testIngredient = new Ingredient("Name", 0);
+      Ingredient testIngredient = new Ingredient("Name", 0, 0);
       testIngredient.Save();
       testIngredient.Update("Other name", 0);
 
-      Ingredient newIngredient = new Ingredient("Other name", 0, testIngredient.GetId());
+      Ingredient newIngredient = new Ingredient("Other name", 0, 0, testIngredient.GetId());
 
       Assert.Equal(testIngredient, newIngredient);
     }
@@ -96,6 +96,7 @@ namespace RecipieBox
     {
       Ingredient.DeleteAll();
       Recipie.DeleteAll();
+      Tag.DeleteAll();
     }
   }
 }
