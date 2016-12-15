@@ -179,9 +179,9 @@ namespace RecipieBox
 
     public void Dispose()
     {
+      Instruction.DeleteAll();
       Recipie.DeleteAll();
-      Ingredient.DeleteAll();
       Tag.DeleteAll();
-    }
+      Ingredient.DeleteAll();    }
   }
 }
