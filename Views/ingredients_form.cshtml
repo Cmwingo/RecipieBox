@@ -1,0 +1,14 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+
+<h1>Add a new ingredient</h1>
+<form action="/ingredients/new" method="post">
+  <input id='recipie-id' name='recipie-id' type='hidden' value='@Model.GetId()'>
+  <label for="ingredient-description">Ingredient description:</label>
+  <input id="ingredient-description" name="ingredient-description" type="text" required>
+  <label for="ingredient-quantity">Ingredient quantity:</label>
+  <input id="ingredient-quantity" name="ingredient-quantity" type="number" required>
+  <button type="submit">Add new ingredient</button>
+</form>
+<p><a href="/">Back home</a></p>

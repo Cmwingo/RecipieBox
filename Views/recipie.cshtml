@@ -6,6 +6,22 @@
 <h2>Recipie: @Model["recipie"].GetName()</h2>
 <h3>Rating: @Model["recipie"].GetRating() stars</h3>
 <hr />
+@if (@Model["recipieIngredients"].Count != 0)
+{
+  <h4>Ingredients:</h4>
+  <ul>
+  @foreach (var ingredient in @Model["recipieIngredients"])
+  {
+    <li>@ingredient.GetQuantity()  @ingredient.GetName()</li>
+  }
+  </ul>
+}
+<h4>Add an ingredient to this recipie</h4>
+<form action='/recipie/add_ingredient'>
+  <input id='recipie-id' name='recipie-id' type='hidden' value='@Model["recipie"].GetId()'>
+  <button type='submit'>Add</button>
+</form>
+<hr />
 @if (@Model["recipieTags"].Count != 0)
 {
   <h4>This recipie has these tags:</h4>
@@ -27,11 +43,11 @@
     }
   </select>
   <button type='submit'>Add</button>
-  <h4><a href="/recipies/update/@Model["recipie"].GetId()">Update this recipie</a></h4>
-
-  </form>
-  <form action="/recipie/delete/@Model["recipie"].GetId()" method="post">
-    <input type="hidden" name="_method" value="DELETE">
-    <button class="leftmargin btn-sm btn-danger" type="submit">Delete</button>
-  </form>
+</form>
+<hr />
+<h4><a href="/recipies/update/@Model["recipie"].GetId()">Update this recipie</a></h4>
+<form action="/recipie/delete/@Model["recipie"].GetId()" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+  <button class="leftmargin btn-sm btn-danger" type="submit">Delete</button>
+</form>
 <p><a href="/">Return to Main Page</a></p>

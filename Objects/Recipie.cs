@@ -278,26 +278,6 @@ namespace RecipieBox
       return tags;
     }
 
-    public void AddIngredient(Ingredient newIngredient)
-    {
-      SqlConnection conn = DB.Connection();
-      conn.Open();
-
-      SqlCommand cmd = new SqlCommand("INSERT INTO ingredients (recipie_id) VALUES (@RecipieId);", conn);
-
-      SqlParameter recipieIdParameter = new SqlParameter();
-      recipieIdParameter.ParameterName = "@RecipieId";
-      recipieIdParameter.Value = this.GetId();
-      cmd.Parameters.Add(recipieIdParameter);
-
-      cmd.ExecuteNonQuery();
-
-      if (conn != null)
-      {
-        conn.Close();
-      }
-    }
-
     public List<Ingredient> GetIngredients()
     {
       SqlConnection conn = DB.Connection();
