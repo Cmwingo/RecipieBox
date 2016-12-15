@@ -72,7 +72,7 @@ namespace RecipieBox
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM instructions;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM instructions ORDER BY step_number;", conn);
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())

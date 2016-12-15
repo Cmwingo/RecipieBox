@@ -47,10 +47,12 @@ namespace RecipieBox
         List<Tag> RecipieTags = SelectedRecipie.GetTags();
         List<Tag> AllTags = Tag.GetAll();
         List<Ingredient> RecipieIngredients = SelectedRecipie.GetIngredients();
+        List<Instruction> RecipieInstructions = SelectedRecipie.GetInstructions();
         model.Add("recipie", SelectedRecipie);
         model.Add("recipieTags", RecipieTags);
         model.Add("allTags", AllTags);
         model.Add("recipieIngredients", RecipieIngredients);
+        model.Add("recipieInstructions", RecipieInstructions);
         return View["recipie.cshtml", model];
       };
 
@@ -128,6 +130,18 @@ namespace RecipieBox
         Recipie selectedRecipie = Recipie.Find(Request.Form["recipie-id"]);
         Ingredient newIngredient = new Ingredient(Request.Form["ingredient-description"], Request.Form["recipie-id"], Request.Form["ingredient-quantity"]);
         newIngredient.Save();
+        return View["success.cshtml"];
+      };
+
+      Get["recipie/add_instruction"] = _ => {
+        Recipie selectedRecipie = Recipie.Find(Request.Query["recipie-id"]);
+        return View["instructions_form.cshtml", selectedRecipie];
+      };
+
+      Post["instructions/new"] = _ => {
+        Recipie selectedRecipie = Recipie.Find(Request.Form["recipie-id"]);
+        Instruction newInstruction = new Instruction(Request.Form["instruction-description"], Request.Form["recipie-id"], Request.Form["instruction-step-number"]);
+        newInstruction.Save();
         return View["success.cshtml"];
       };
     }

@@ -22,6 +22,22 @@
   <button type='submit'>Add</button>
 </form>
 <hr />
+@if (@Model["recipieInstructions"].Count != 0)
+{
+  <h4>Instructions:</h4>
+  <ol>
+  @foreach (var instruction in @Model["recipieInstructions"])
+  {
+    <li>@instruction.GetName()</li>
+  }
+  </ol>
+}
+<h4>Add an instruction to this recipie</h4>
+<form action='/recipie/add_instruction'>
+  <input id='recipie-id' name='recipie-id' type='hidden' value='@Model["recipie"].GetId()'>
+  <button type='submit'>Add</button>
+</form>
+<hr />
 @if (@Model["recipieTags"].Count != 0)
 {
   <h4>This recipie has these tags:</h4>
@@ -50,4 +66,4 @@
   <input type="hidden" name="_method" value="DELETE">
   <button class="leftmargin btn-sm btn-danger" type="submit">Delete</button>
 </form>
-<p><a href="/">Return to Main Page</a></p>
+<p class="centered"><a href="/">Return to Main Page</a></p>

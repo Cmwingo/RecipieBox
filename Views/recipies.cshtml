@@ -10,7 +10,7 @@
   <ul>
     @foreach (var recipie in Model)
     {
-      <li><a href='/recipies/@recipie.GetId()'>@recipie.GetName()</a></li>
+      <li><a href='/recipies/@recipie.GetId()'>@recipie.GetName()</a>---@recipie.GetRating() stars</li>
     }
   </ul>
 }

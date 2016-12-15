@@ -1,0 +1,14 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+
+<h1>Add a new instruction</h1>
+<form action="/instructions/new" method="post">
+  <input id='recipie-id' name='recipie-id' type='hidden' value='@Model.GetId()'>
+  <label for="instruction-description">Instruction description:</label>
+  <input id="instruction-description" name="instruction-description" type="text" required>
+  <label for="instruction-step-number">Instruction step number:</label>
+  <input id="instruction-step-number" name="instruction-step-number" type="number" required>
+  <button type="submit">Add new instruction</button>
+</form>
+<p><a href="/">Back home</a></p>

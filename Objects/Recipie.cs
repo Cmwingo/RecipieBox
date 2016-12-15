@@ -56,7 +56,7 @@ namespace RecipieBox
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM recipies;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM recipies ORDER BY rating DESC;", conn);
       SqlDataReader rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -319,7 +319,7 @@ namespace RecipieBox
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM instructions WHERE recipie_id = @RecipieId;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM instructions WHERE recipie_id = @RecipieId ORDER BY step_number;", conn);
 
       SqlParameter recipieIdParameter = new SqlParameter();
       recipieIdParameter.ParameterName = "@RecipieId";
