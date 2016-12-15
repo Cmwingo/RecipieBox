@@ -143,6 +143,28 @@ namespace RecipieBox
     }
 
     [Fact]
+    public void Test_GetInstructions_ReturnsAllRecipieInstructions()
+    {
+      //Arrange
+      Recipie testRecipie = new Recipie("Pizza");
+      testRecipie.Save();
+
+      Instruction testInstruction1 = new Instruction("Cheese", testRecipie.GetId());
+      testInstruction1.Save();
+
+      Instruction testInstruction2 = new Instruction("Tomato", testRecipie.GetId());
+      testInstruction2.Save();
+
+      //Act
+      List<Instruction> result = testRecipie.GetInstructions();
+      List<Instruction> testList = new List<Instruction> {testInstruction1, testInstruction2};
+
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
+
+    [Fact]
     public void Test_Delete_DeletesRecipieAssociationsFromDatabase()
     {
       //Arrange

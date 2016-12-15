@@ -313,5 +313,41 @@ namespace RecipieBox
       }
       return ingredients;
     }
+
+    public List<Instruction> GetInstructions()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT * FROM instructions WHERE recipie_id = @RecipieId;", conn);
+
+      SqlParameter recipieIdParameter = new SqlParameter();
+      recipieIdParameter.ParameterName = "@RecipieId";
+      recipieIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(recipieIdParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<Instruction> instructions = new List<Instruction> {};
+
+      while (rdr.Read())
+      {
+        int thisInstructionId = rdr.GetInt32(0);
+        string instructionName = rdr.GetString(1);
+        int instructionQuantity = rdr.GetInt32(2);
+        int instructionRecipieId = rdr.GetInt32(3);
+        Instruction foundInstruction = new Instruction(instructionName, instructionRecipieId, instructionQuantity, thisInstructionId);
+        instructions.Add(foundInstruction);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      return instructions;
+    }
   }
 }
