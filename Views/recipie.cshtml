@@ -12,7 +12,9 @@
   <ul>
   @foreach (var ingredient in @Model["recipieIngredients"])
   {
-    <li>@ingredient.GetQuantity()  @ingredient.GetName()</li>
+    <li>
+      <a class="leftmargin" href="/ingredients/update/@ingredient.GetId()">@ingredient.GetQuantity()  @ingredient.GetName()</a>
+    </li>
   }
   </ul>
 }
@@ -28,7 +30,13 @@
   <ol>
   @foreach (var instruction in @Model["recipieInstructions"])
   {
-    <li>@instruction.GetName()</li>
+    <li>
+      <a class="leftmargin" href="/instructions/update/@instruction.GetId()">@instruction.GetName()</a> ||
+      <form action="/instructions/delete/@instruction.GetId()" method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button class="leftmargin btn-sm btn-danger" type="submit">Delete</button>
+      </form>
+    </li>
   }
   </ol>
 }

@@ -114,7 +114,7 @@ namespace RecipieBox
         return View["success.cshtml"];
       };
 
-      Delete["recipie/delete/{id}"] = parameters =>
+      Delete["recipies/delete/{id}"] = parameters =>
       {
         Recipie foundRecipie = Recipie.Find(parameters.id);
         foundRecipie.Delete();
@@ -142,6 +142,33 @@ namespace RecipieBox
         Recipie selectedRecipie = Recipie.Find(Request.Form["recipie-id"]);
         Instruction newInstruction = new Instruction(Request.Form["instruction-description"], Request.Form["recipie-id"], Request.Form["instruction-step-number"]);
         newInstruction.Save();
+        return View["success.cshtml"];
+      };
+
+      Get["ingredients/update/{id}"] = parameters =>
+      {
+        Ingredient foundIngredient = Ingredient.Find(parameters.id);
+        return View["ingredient_update.cshtml", foundIngredient];
+      };
+
+      Patch["ingredients/update/{id}"] = parameters =>
+      {
+        Ingredient foundIngredient = Ingredient.Find(parameters.id);
+        foundIngredient.Update(Request.Form["new-description"], Request.Form["new-quantity"]);
+        return View["success.cshtml"];
+      };
+
+      Delete["ingredients/delete/{id}"] = parameters =>
+      {
+        Ingredient foundIngredient = Ingredient.Find(parameters.id);
+        foundIngredient.Delete();
+        return View["success.cshtml"];
+      };
+
+      Delete["instructions/delete/{id}"] = parameters =>
+      {
+        Instruction foundInstruction = Instruction.Find(parameters.id);
+        foundInstruction.Delete();
         return View["success.cshtml"];
       };
     }

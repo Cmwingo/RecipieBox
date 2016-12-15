@@ -1,0 +1,17 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+
+<h3>@Model.GetName()</h3>
+
+<form action="/ingredients/update/@Model.GetId()" method="post">
+  <input name='_method' type='hidden' value='PATCH'>
+  <input name='recipie-id' type='hidden' value='@Model.GetId()'>
+  <input type="text" name="new-description" placeholder="Enter new Name:" required>
+  <input type="text" name="new-quantity" placeholder="Enter new Quantity:" required>
+  <button type="submit" name="button">Submit</button>
+</form>
+<form action="/ingredients/delete/@Model.GetId()" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+  <button class="leftmargin btn-sm btn-danger" type="submit">Delete</button>
+</form>
