@@ -12,7 +12,7 @@
   @foreach (var ingredient in @Model["recipieIngredients"])
   {
     <li>
-      <a class="leftmargin" href="/ingredients/update/@ingredient.GetId()">@ingredient.GetQuantity()  @ingredient.GetName()</a>
+      <a class="leftmargin" href="/ingredients/update/@ingredient.GetId()">@ingredient.GetQuantity() @ingredient.GetUnit() @ingredient.GetName()</a>
     </li>
   }
   </ul>

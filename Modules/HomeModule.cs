@@ -128,7 +128,7 @@ namespace RecipieBox
 
       Post["ingredients/new"] = _ => {
         Recipie selectedRecipie = Recipie.Find(Request.Form["recipie-id"]);
-        Ingredient newIngredient = new Ingredient(Request.Form["ingredient-description"], Request.Form["recipie-id"], Request.Form["ingredient-quantity"]);
+        Ingredient newIngredient = new Ingredient(Request.Form["ingredient-description"], Request.Form["recipie-id"], Request.Form["ingredient-quantity"], Request.Form["ingredient-unit"]);
         newIngredient.Save();
         return View["success.cshtml"];
       };
